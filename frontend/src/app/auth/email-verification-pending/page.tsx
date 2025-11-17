@@ -40,9 +40,9 @@ export default function EmailVerificationPending() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-4 rounded-lg bg-white px-6 py-12 shadow-md">
-        {message && <div className="rounded border border-green-200 bg-green-50 px-4 py-3 text-green-700">{message}</div>}
+        {message && <div className="rounded border border-green-200 bg-green-50 px-4 py-3 text-center text-green-700">{message}</div>}
 
-        {error && <div className="rounded border border-red-200 bg-red-50 px-4 py-3 text-red-700">{error}</div>}
+        {error && <div className="rounded border border-red-200 bg-red-50 px-4 py-3 text-center text-red-700">{error}</div>}
 
         <div className="space-y-4 text-center">
           <div className="text-center">
