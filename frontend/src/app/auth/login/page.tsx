@@ -12,7 +12,10 @@ export default function Login() {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const [showResendVerification, setShowResendVerification] = useState(false);
+  const [resendingVerification, setResendingVerification] = useState(false);
+  const [resendMessage, setResendMessage] = useState("");
+  const { login, resendVerification } = useAuth();
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,10 +25,29 @@ export default function Login() {
     });
   };
 
+  const handleResendVerification = async () => {
+    setResendingVerification(true);
+    setResendMessage("");
+    setError("");
+
+    try {
+      await resendVerification(formData.email);
+      setResendMessage("Verification email sent successfully! Please check your email.");
+      setShowResendVerification(false);
+    } catch (err: any) {
+      const errorMsg = err.response?.data?.detail || "Failed to resend verification email.";
+      setError(errorMsg);
+    } finally {
+      setResendingVerification(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
+    setResendMessage("");
+    setShowResendVerification(false);
 
     try {
       await login(formData.email, formData.password);
@@ -33,6 +55,11 @@ export default function Login() {
     } catch (err: any) {
       const errorMsg = err.response?.data?.detail || err.response?.data?.non_field_errors?.[0] || "Login failed. Please try again.";
       setError(errorMsg);
+
+      // Check if the error is about email verification
+      if (errorMsg === "Please verify your email address first.") {
+        setShowResendVerification(true);
+      }
     } finally {
       setLoading(false);
     }
@@ -46,6 +73,21 @@ export default function Login() {
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           {error && <div className="rounded border border-red-200 bg-red-50 px-4 py-3 text-red-700">{error}</div>}
+
+          {resendMessage && <div className="rounded border border-green-200 bg-green-50 px-4 py-3 text-green-700">{resendMessage}</div>}
+
+          {showResendVerification && (
+            <div className="rounded border border-blue-200 bg-blue-50 px-4 py-3">
+              <p className="mb-3 text-sm text-blue-700">Your email address needs to be verified before you can sign in.</p>
+              <button
+                type="button"
+                onClick={handleResendVerification}
+                disabled={resendingVerification}
+                className="w-full rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50">
+                {resendingVerification ? "Sending..." : "Resend verification email"}
+              </button>
+            </div>
+          )}
 
           <div className="space-y-4">
             <div>
