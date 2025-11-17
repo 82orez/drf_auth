@@ -33,7 +33,62 @@ export default function Register() {
       await register(formData.email, formData.username, formData.password, formData.passwordConfirm);
       router.push(`/auth/email-verification-pending?email=${encodeURIComponent(formData.email)}`);
     } catch (err: any) {
-      setError(err.response?.data?.detail || "Registration failed. Please try again.");
+      console.error("Registration error:", err); // 디버깅용 로그
+
+      let errorMessage = "Registration failed. Please try again.";
+
+      if (err.response?.data) {
+        const data = err.response.data;
+
+        // 중복 이메일 오류 처리
+        if (data.email && Array.isArray(data.email)) {
+          const emailErrors = data.email;
+          if (
+            emailErrors.some(
+              (error: string) =>
+                error.toLowerCase().includes("already exists") || error.toLowerCase().includes("duplicate") || error.toLowerCase().includes("unique"),
+            )
+          ) {
+            errorMessage = "This email address is already registered. Please use a different email or try logging in.";
+          } else {
+            errorMessage = `Email: ${emailErrors.join(", ")}`;
+          }
+        }
+        // 중복 사용자명 오류 처리
+        else if (data.username && Array.isArray(data.username)) {
+          const usernameErrors = data.username;
+          if (
+            usernameErrors.some(
+              (error: string) =>
+                error.toLowerCase().includes("already exists") || error.toLowerCase().includes("duplicate") || error.toLowerCase().includes("unique"),
+            )
+          ) {
+            errorMessage = "This username is already taken. Please choose a different username.";
+          } else {
+            errorMessage = `Username: ${usernameErrors.join(", ")}`;
+          }
+        }
+        // 일반적인 detail 메시지
+        else if (data.detail) {
+          errorMessage = data.detail;
+        }
+        // 기타 필드 오류들
+        else if (data.password) {
+          errorMessage = Array.isArray(data.password) ? data.password.join(", ") : data.password;
+        } else if (data.non_field_errors) {
+          errorMessage = Array.isArray(data.non_field_errors) ? data.non_field_errors.join(", ") : data.non_field_errors;
+        }
+        // 첫 번째 발견된 오류 메시지 사용
+        else {
+          const firstErrorKey = Object.keys(data)[0];
+          if (firstErrorKey && data[firstErrorKey]) {
+            const firstError = Array.isArray(data[firstErrorKey]) ? data[firstErrorKey][0] : data[firstErrorKey];
+            errorMessage = `${firstErrorKey}: ${firstError}`;
+          }
+        }
+      }
+
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
