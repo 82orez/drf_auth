@@ -33,7 +33,32 @@ export default function Register() {
       await register(formData.email, formData.username, formData.password, formData.passwordConfirm);
       router.push(`/auth/email-verification-pending?email=${encodeURIComponent(formData.email)}`);
     } catch (err: any) {
-      setError(err.response?.data?.detail || "Registration failed. Please try again.");
+      // Handle different error response formats
+      let errorMessage = "Registration failed. Please try again.";
+
+      if (err.response?.data) {
+        const data = err.response.data;
+
+        // Check for non_field_errors (from serializer validation)
+        if (data.non_field_errors && data.non_field_errors.length > 0) {
+          errorMessage = data.non_field_errors[0];
+        }
+        // Check for detail (from other API errors)
+        else if (data.detail) {
+          errorMessage = data.detail;
+        }
+        // Check for field-specific errors
+        else if (typeof data === "object") {
+          const firstError = Object.values(data)[0];
+          if (Array.isArray(firstError)) {
+            errorMessage = firstError[0];
+          } else if (typeof firstError === "string") {
+            errorMessage = firstError;
+          }
+        }
+      }
+
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
