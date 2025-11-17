@@ -157,6 +157,11 @@ DEFAULT_FROM_EMAIL = "noreply@dj-issue-vote.com"
 # Frontend URL
 FRONTEND_URL = env("FRONTEND_URL", default="http://localhost:3000")
 
+# Email Verification Token Settings
+EMAIL_VERIFICATION_TOKEN_EXPIRES_HOURS = env(
+    "EMAIL_VERIFICATION_TOKEN_EXPIRES_HOURS", default=24, cast=int
+)
+
 # Session Settings
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = "Lax"

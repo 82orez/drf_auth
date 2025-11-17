@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils import timezone
 from datetime import timedelta
+from django.conf import settings
 
 
 class User(AbstractUser):
@@ -24,7 +25,10 @@ class EmailVerificationToken(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.expires_at:
-            self.expires_at = timezone.now() + timedelta(hours=24)
+            expires_hours = getattr(
+                settings, "EMAIL_VERIFICATION_TOKEN_EXPIRES_HOURS", 24
+            )
+            self.expires_at = timezone.now() + timedelta(hours=expires_hours)
         super().save(*args, **kwargs)
 
     def is_expired(self):
@@ -32,6 +36,9 @@ class EmailVerificationToken(models.Model):
 
     def __str__(self):
         return f"Email verification token for {self.user.email}"
+
+
+# ... existing code ...
 
 
 class PasswordResetToken(models.Model):
