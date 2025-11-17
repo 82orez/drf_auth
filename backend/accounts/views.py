@@ -16,6 +16,7 @@ from .serializers import (
     PasswordResetConfirmSerializer,
     UserSerializer,
 )
+from django.middleware.csrf import get_token
 
 
 @api_view(["POST"])
@@ -288,3 +289,10 @@ def password_reset_confirm(request):
 def user_profile(request):
     serializer = UserSerializer(request.user)
     return Response(serializer.data)
+
+
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def get_csrf_token(request):
+    token = get_token(request)
+    return Response({"csrfToken": token})
