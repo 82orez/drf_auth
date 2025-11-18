@@ -75,7 +75,7 @@ export default function Register() {
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Create your account</h2>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          {error && <div className="rounded border border-red-200 bg-red-50 px-4 py-3 text-red-700">{error}</div>}
+          {error && <div className="rounded border border-red-200 bg-red-50 px-4 py-3 text-center text-red-700">{error}</div>}
 
           <div className="space-y-4">
             <div>
