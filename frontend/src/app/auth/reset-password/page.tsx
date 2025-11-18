@@ -50,6 +50,7 @@ export default function ResetPassword() {
 
     try {
       await confirmPasswordReset(token, formData.password, formData.passwordConfirm);
+      alert("Your password has been successfully reset. You will be redirected to the login page.");
       router.push("/auth/login?message=Password reset successfully");
     } catch (err: any) {
       // Django DRF validation errors are typically in non_field_errors
