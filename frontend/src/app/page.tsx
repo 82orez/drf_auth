@@ -30,7 +30,7 @@ export default function Home() {
 
           {user ? (
             <div className="space-y-4">
-              <div className="text-lg text-gray-700">Welcome, {user.username}!</div>
+              <div className="text-lg text-gray-700">Welcome!</div>
               <div className="text-sm text-gray-500">Email: {user.email}</div>
               <div className="text-sm text-gray-500">Email Verified: {user.is_email_verified ? "✅" : "❌"}</div>
               <button

@@ -35,7 +35,7 @@ def register(request):
         )
         subject = "Verify your email address"
         message = f"""
-        Hi {user.username},
+        Hi! {user.email},
         
         Please click the link below to verify your email address:
         {verification_url}
@@ -135,7 +135,7 @@ def resend_verification(request):
             )
             subject = "Verify your email address"
             message = f"""
-            Hi {user.username},
+            Hi! {user.email},
             
             Please click the link below to verify your email address:
             {verification_url}
@@ -212,7 +212,7 @@ def password_reset_request(request):
             )
             subject = "Password Reset Request"
             message = f"""
-            Hi {user.username},
+            Hi! {user.email},
             
             You requested a password reset. Please click the link below to reset your password:
             {reset_url}
