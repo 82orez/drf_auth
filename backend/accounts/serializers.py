@@ -36,12 +36,21 @@ class LoginSerializer(serializers.Serializer):
         password = attrs.get("password")
 
         if email and password:
+            # 먼저 해당 이메일로 등록된 사용자가 있는지 확인
+            try:
+                user = User.objects.get(email=email)
+            except User.DoesNotExist:
+                raise serializers.ValidationError(
+                    "We couldn't find an account with this email address."
+                )
+
+            # 사용자가 존재하면 비밀번호 확인
             user = authenticate(
                 request=self.context.get("request"), username=email, password=password
             )
 
             if not user:
-                raise serializers.ValidationError("Invalid email or password.")
+                raise serializers.ValidationError("The passwords don’t match.")
 
             if not user.is_active:
                 raise serializers.ValidationError("User account is disabled.")
@@ -55,6 +64,9 @@ class LoginSerializer(serializers.Serializer):
             return attrs
         else:
             raise serializers.ValidationError("Must include email and password.")
+
+
+# ... existing code ...
 
 
 class EmailVerificationSerializer(serializers.Serializer):
