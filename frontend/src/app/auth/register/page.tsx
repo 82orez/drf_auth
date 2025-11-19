@@ -41,6 +41,7 @@ export default function Register() {
 
       if (err.response?.data) {
         const data = err.response.data;
+        console.log("API Error Response:", data);
 
         // Check for non_field_errors (from serializer validation)
         if (data.non_field_errors && data.non_field_errors.length > 0) {
@@ -49,6 +50,13 @@ export default function Register() {
         // Check for detail (from other API errors)
         else if (data.detail) {
           errorMessage = data.detail;
+        }
+        // Check for email
+        else if (data.email && data.email.length > 0) {
+          const msg = data.email[0];
+          if (msg.includes("user with this email already exists")) {
+            errorMessage = "An account with this email already exists. Please sign in.";
+          }
         }
         // Check for field-specific errors
         else if (typeof data === "object") {
@@ -74,7 +82,16 @@ export default function Register() {
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Create your account</h2>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          {error && <div className="rounded border border-red-200 bg-red-50 px-4 py-3 text-center text-red-700">{error}</div>}
+          {error && (
+            <div
+              className={`animate-pulse rounded border px-4 py-3 text-center font-semibold ${
+                error === "An account with this email already exists. Please sign in."
+                  ? "border-blue-200 bg-blue-50 text-blue-700"
+                  : "border-red-200 bg-red-50 text-red-700"
+              }`}>
+              {error}
+            </div>
+          )}
 
           <div className="space-y-4">
             <div>
