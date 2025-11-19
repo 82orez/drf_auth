@@ -48,23 +48,23 @@ export default function EmailVerificationPending() {
           <div className="text-center">
             <h2 className="mt-0 text-3xl font-extrabold text-gray-900">Check your email</h2>
             <p className="mt-6 text-lg font-semibold text-gray-600 underline">
-              We sent a verification link to <span className="font-medium text-indigo-600">{email}</span>
+              We've sent a verification link to <span className="font-medium text-indigo-600">{email}</span>
             </p>
 
             <div className={"mt-6 space-y-2"}>
               <p className="text-sm text-gray-600">Please click the link in the email to verify your account and complete your sign-up.</p>
               <p className="text-sm text-gray-600">If the email hasn’t arrived, be sure to check your spam or junk folder.</p>
-              <p className="text-sm text-gray-600">Or click the button below to request a new verification email.</p>
+              {/*<p className="text-sm text-gray-600">Or click the button below to request a new verification email.</p>*/}
             </div>
           </div>
 
           <div className="mt-8 space-y-3">
-            <button
-              onClick={handleResend}
-              disabled={loading}
-              className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50">
-              {loading ? "Sending..." : "Resend verification email"}
-            </button>
+            {/*<button*/}
+            {/*  onClick={handleResend}*/}
+            {/*  disabled={loading}*/}
+            {/*  className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50">*/}
+            {/*  {loading ? "Sending..." : "Resend verification email"}*/}
+            {/*</button>*/}
 
             <Link
               href="/auth/login"
