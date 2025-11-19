@@ -10,7 +10,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["email", "username", "password", "password_confirm"]
+        fields = ["email", "password", "password_confirm"]
 
     def validate(self, attrs):
         if attrs["password"] != attrs["password_confirm"]:
@@ -21,7 +21,6 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         validated_data.pop("password_confirm")
         user = User.objects.create_user(
             email=validated_data["email"],
-            username=validated_data["username"],
             password=validated_data["password"],
         )
         return user
@@ -66,9 +65,6 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError("Must include email and password.")
 
 
-# ... existing code ...
-
-
 class EmailVerificationSerializer(serializers.Serializer):
     token = serializers.UUIDField()
 
@@ -95,5 +91,5 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "email", "username", "is_email_verified", "date_joined"]
+        fields = ["id", "email", "is_email_verified", "date_joined"]
         read_only_fields = ["id", "is_email_verified", "date_joined"]

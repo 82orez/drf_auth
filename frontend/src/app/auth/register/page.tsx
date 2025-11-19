@@ -10,7 +10,6 @@ import { GoEye } from "react-icons/go";
 export default function Register() {
   const [formData, setFormData] = useState({
     email: "",
-    username: "",
     password: "",
     passwordConfirm: "",
   });
@@ -34,7 +33,7 @@ export default function Register() {
     setError("");
 
     try {
-      await register(formData.email, formData.username, formData.password, formData.passwordConfirm);
+      await register(formData.email, formData.password, formData.passwordConfirm);
       router.push(`/auth/email-verification-pending?email=${encodeURIComponent(formData.email)}`);
     } catch (err: any) {
       // Handle different error response formats
@@ -91,22 +90,6 @@ export default function Register() {
                 onChange={handleChange}
                 className="relative mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none sm:text-sm"
                 placeholder="Email address"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-                Username
-              </label>
-              <input
-                id="username"
-                name="username"
-                type="text"
-                required
-                value={formData.username}
-                onChange={handleChange}
-                className="relative mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none sm:text-sm"
-                placeholder="Username"
               />
             </div>
 

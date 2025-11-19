@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { authAPI } from "@/lib/api";
 
 interface User {
@@ -16,7 +16,7 @@ interface AuthContextType {
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
-  register: (email: string, username: string, password: string, passwordConfirm: string) => Promise<void>;
+  register: (email: string, password: string, passwordConfirm: string) => Promise<void>;
   verifyEmail: (token: string) => Promise<void>;
   resendVerification: (email: string) => Promise<void>;
   requestPasswordReset: (email: string) => Promise<void>;
@@ -57,8 +57,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
   };
 
-  const register = async (email: string, username: string, password: string, passwordConfirm: string) => {
-    await authAPI.register({ email, username, password, password_confirm: passwordConfirm });
+  const register = async (email: string, password: string, passwordConfirm: string) => {
+    await authAPI.register({ email, password, password_confirm: passwordConfirm });
   };
 
   const verifyEmail = async (token: string) => {
@@ -90,8 +90,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         requestPasswordReset,
         confirmPasswordReset,
         refreshUser,
-      }}
-    >
+      }}>
       {children}
     </AuthContext.Provider>
   );
@@ -100,7 +99,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 }
