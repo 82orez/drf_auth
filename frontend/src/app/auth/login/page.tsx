@@ -75,7 +75,9 @@ export default function Login() {
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          {error && <div className="rounded border border-red-200 bg-red-50 px-4 py-3 text-center text-red-700">{error}</div>}
+          {error && (
+            <div className="animate-pulse rounded border border-red-200 bg-red-50 px-4 py-3 text-center font-semibold text-red-700">{error}</div>
+          )}
 
           {resendMessage && <div className="rounded border border-green-200 bg-green-50 px-4 py-3 text-green-700">{resendMessage}</div>}
 
