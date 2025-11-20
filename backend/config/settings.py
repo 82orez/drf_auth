@@ -147,7 +147,7 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 DEFAULT_FROM_EMAIL = "noreply@dj-issue-vote.com"
 
 # EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-# DEFAULT_FROM_EMAIL = "Django Allauth <noreply@supaneer.com>"
+# DEFAULT_FROM_EMAIL = "Django Allauth <noreply@friending.ac>"
 # EMAIL_HOST = "smtp.resend.com"
 # EMAIL_USE_TLS = True
 # EMAIL_PORT = 587
@@ -166,3 +166,4 @@ EMAIL_VERIFICATION_TOKEN_EXPIRES_HOURS = env(
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = "Lax"
 CSRF_COOKIE_SAMESITE = "Lax"
+SESSION_COOKIE_AGE = 60 * 60 * 24  # 1일 (60초 * 60분 * 24시간)
