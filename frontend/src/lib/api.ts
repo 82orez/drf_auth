@@ -1,7 +1,9 @@
 import axios from "axios";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
+
 const api = axios.create({
-  baseURL: "http://localhost:8000/api",
+  baseURL: `${API_BASE_URL}/api`,
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
@@ -13,7 +15,7 @@ api.interceptors.request.use(async (config) => {
   // Django의 CSRF 토큰을 가져오기
   if (["post", "put", "patch", "delete"].includes(config.method?.toLowerCase() || "")) {
     try {
-      const csrfResponse = await fetch("http://localhost:8000/api/auth/csrf/", {
+      const csrfResponse = await fetch(`${API_BASE_URL}/api/auth/csrf/`, {
         credentials: "include",
       });
       const csrfData = await csrfResponse.json();
